@@ -13,12 +13,13 @@ func _ready():
 	iniciar_itens_cena(nome_desta_cena, objetos)
 	
 	for o in objetos:
-		print (o)
 		if o["nome"] == "mala":
 			print(o)
 			var root = get_tree().root
 			if root.get_node_or_null("Norte/Mala/Area2D"):
 					var colisionMala = root.get_node_or_null("Norte/Mala/Area2D/CollisionShape2D")
+					if GlobalSingleton.fase_liberada == 1:
+						colisionMala.disabled = true
 					if GlobalSingleton.fase_liberada == 2:
 						print("colisao da mala ativada")
 						colisionMala.disabled = false
@@ -43,15 +44,6 @@ func interruptor_ativar():
 	# Alterna o estado
 	luz.enabled = not luz.enabled
 	print("Luz: ", luz.enabled)
-
-
-# Evento de clique na Mala no cenário
-func _on_mala_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if GlobalSingleton.fase_liberada == 1:
-			print("A mala está trancada / não há motivo para mexer nela agora.")
-		elif GlobalSingleton.fase_liberada >= 2:
-			get_tree().change_scene_to_file("res://scenes/fase2/zoom_mala.tscn")
 
 # Evento de interação com a área da Parede do Roteador ($ParedeRoteador)
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -137,7 +129,6 @@ func _procurar_e_remover_no_mao(no_atual: Node):
 func _varrer_e_remover_world_item(no_atual: Node):
 	if no_atual == null:
 		return
-		
 	# Procura por nós do tipo Sprite2D que não sejam o próprio roteador da parede
 	if no_atual is Sprite2D and no_atual != roteador_parede_sprite:
 		# Verifica se é um item de mundo/mão (pelo script, meta ou nome)
