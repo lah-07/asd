@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://528f0ef3pcaw"]
+
+[ext_resource type="Texture2D" uid="uid://nraqqpnxtiyr" path="res://assets/computador_telas/senha.png" id="1_qkghh"]
+[ext_resource type="Script" uid="uid://cl2x7yyhtkguu" path="res://scripts/telaComp/barra_senha.gd" id="2_487ly"]
+
+[node name="Tela_Senha" type="Control" unique_id=760084489]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Tela" type="ColorRect" parent="." unique_id=511493874]
+layout_mode = 0
+offset_right = 1815.0
+offset_bottom = 932.0
+color = Color(0.6028433, 0.6028428, 0.60284305, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1212740485]
+position = Vector2(909, 591)
+scale = Vector2(1.8750001, 1.4962964)
+texture = ExtResource("1_qkghh")
+
+[node name="Button" type="Button" parent="." unique_id=86694636 groups=["botoes_computador"]]
+layout_mode = 0
+offset_left = 834.3824
+offset_top = 602.50244
+offset_right = 990.6336
+offset_bottom = 688.0
+theme_override_font_sizes/font_size = 25
+text = "Entrar
+"
+
+[node name="BarraSenha" type="LineEdit" parent="." unique_id=1254352546]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 486.0
+offset_right = 1268.0
+offset_bottom = 556.0
+theme_override_font_sizes/font_size = 40
+placeholder_text = "********"
+script = ExtResource("2_487ly")

@@ -1,44 +1,64 @@
 class_name Config
+static func criar_tabelas():
+	var sql_config = """
+	CREATE TABLE IF NOT EXISTS Config  (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		config TEXT NOT NULL UNIQUE,
+		valor TEXT
+	);
+	"""
 
-static func salvar_configuracao(db, config, valor):
+	Database.db.query(sql_config)
+	
+static func salvar_configuracao( config, valor):
 	var sql = """
 	INSERT INTO Config (config, valor)
 	VALUES (?, ?)
-	ON CONFLICT(config)
-	DO UPDATE SET valor = excluded.valor;
 	"""
-	
-	db.query_with_bindings(sql, [
+	Database.db.query_with_bindings(sql, [
 		config,
 		valor
 	])
 	
 	print("Cena salva: ", config)
 
+static func atualizar_configuracao(config: String, valor):
+	var sql = """
+	UPDATE Config
+	SET valor = ?
+	WHERE config = ?;
+	"""
+	Database.db.query_with_bindings(sql, [
+		str(valor),
+		config
+	])
+	print("Configuração atualizada: ", config, " = ", valor)
 
-static func get_config(db, config):
+
+static func get_config( config):
 	var sql = """
 	SELECT id, config, valor
 	FROM Config
 	WHERE config = ?;
 	"""
-	
-	db.query_with_bindings(sql, [config])
-	
-	var resultado = db.get_query_result()
-	
+	Database.db.query_with_bindings(sql, [config])
+	var resultado = Database.db.get_query_result()
 	if resultado.size() > 0:
-		return resultado
+		return resultado[0]
 	
 	return null
 
 
-static func delete_config(db, config):
+static func delete_config( config):
 	var sql = """
 	DELETE FROM Config
 	WHERE config = ?;
 	"""
-	
-	db.query_with_bindings(sql, [config])
-	
+	Database.db.query_with_bindings(sql, [config])
 	print("Cena deletada: ", config)
+
+static func iniciar_config():
+	if get_config("volume") == null:
+		salvar_configuracao("volume", 40)
+	if get_config("brilho") == null:
+		salvar_configuracao("brilho", 1)

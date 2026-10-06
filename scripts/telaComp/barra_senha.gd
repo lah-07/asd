@@ -1,0 +1,14 @@
+extends LineEdit
+@onready var barra_senha: LineEdit = $"."
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	barra_senha.text_submitted.connect(_on_entrar)
+	$"../Button".pressed.connect(func(): _on_entrar(barra_senha.text))
+
+func _on_entrar(texto: String):
+	if texto == "LBD-3451":
+		print("Senha correta: ", texto)
+		get_parent().get_parent().get_node("Tela_Senha").hide()
+	else:
+		print("INCORRETO")
